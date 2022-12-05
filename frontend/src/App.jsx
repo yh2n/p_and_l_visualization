@@ -1,12 +1,6 @@
-import { useState } from "react"
-import moment from "moment"
-import Highcharts from "highcharts/highstock"
-import HighchartsReact from "highcharts-react-official"
-
-import "./App.css"
-
 function App() {
-  const [state, setState] = useState(function getInitialState() {
+  // lazy initialization
+  const [state, setState] = useState(() => {
     fetch("http://localhost:8000/api", {
       method: "GET",
       headers: { "content-type": "application/json" },
@@ -17,73 +11,134 @@ function App() {
       })
       .then((trades) => {
         for (let fill of trades) {
-          fill.timestamp = fill.timestamp / 1000
+          // to review
+          fill.timestamp = fill.timestamp / 1000 - 14400000
         }
         for (let el of trades) {
           el["total"] =
             el.fill_price * el.fill_quantity * ((100 + el.fees) / 100)
         }
         setState(trades)
-        // console.table(trades.filter((el) => el.symbol === "BTC/USDT"))
+        console.table(trades[trades.length - 1])
+        console.log(
+          format(
+            fromUnixTime(1666019586954552 / 1000000),
+            "MM/dd/yyyy, HH:mm:ss"
+          )
+        )
       })
   })
 
   let options
   if (state) {
     options = {
+      title: {
+        text: `${moment(1666019586954552 / 1000).format("MM/DD/YYYY")} Trades`,
+      },
       series: [
         {
+          clip: false,
           name: "BOUGHT",
+          showInLegend: true,
           data: state
-            .filter((fill) => fill.side === "BUY" && fill.symbol === "BTC/USDT")
-            .map((fill) => fill.total),
-          pointInterval: state.pointInterval,
+            .filter((fill) => fill.side === "BUY" && fill.exchange === "OKEX")
+            .map((fill) => {
+              return { x: fill.timestamp, y: fill.total }
+            }),
+          color: "orange",
         },
         {
           name: "SOLD",
+          showInLegend: true,
+          clip: false,
           data: state
-            .filter(
-              (fill) => fill.side === "SELL" && fill.symbol === "BTC/USDT"
-            )
-            .map((fill) => fill.total),
-          pointInterval: state.pointInterval,
+            .filter((fill) => fill.side === "SELL" && fill.exchange === "OKEX")
+            .map((fill) => {
+              return { x: fill.timestamp, y: fill.total }
+            }),
+          color: "green",
         },
       ],
       xAxis: {
         categories: state.map((fill) => fill.timestamp),
         type: "datetime",
-        visible: false,
-      },
-      rangeSelector: {
-        buttons: [{ type: "second", count: 10, text: "10s" }],
+        // visible: false,
+        time: {
+          timezone: "America/New_York",
+        },
       },
       yAxis: {
         title: {
           text: "Total",
         },
+        crosshair: true,
+      },
+      rangeSelector: {
+        // enabled: false,
+        verticalAlign: "top",
+        buttons: [{ type: "day", count: 1, text: "1 d" }],
       },
       chart: {
-        height: "700px",
+        // type: "spline",
+        height: "800px",
+        backgroundColor: "black",
+      },
+      plotOptions: {
+        series: {
+          cropThreshold: 800,
+          tooltip: {
+            followPointer: true,
+            shared: true,
+          },
+        },
+      },
+      tooltip: {
+        split: true,
+        shared: true,
+        borderColor: "silver",
+        backgroundColor: "black",
+        style: { color: "white" },
+      },
+      credits: {
+        enabled: false,
       },
     }
   }
 
   return (
     <div className="App">
-      <div className="">Pattern Research</div>
-      <h1>{moment(1666019586954552 / 1000).format("dddd MMMM, D YYYY")} P&L</h1>
-      {state ? <p>Total Trades: {state.length}</p> : null}
-      <div className="chart">
+      <section>
+        <header className="header">
+          {state ? (
+            <h1>
+              {moment(state[0].timestamp).format("dddd MMMM, D YYYY")} P&L{" "}
+            </h1>
+          ) : null}
+        </header>
+        <div className="number_of_trades">
+          {state ? (
+            <div>
+              {" "}
+              <p>
+                Time period:
+                {moment(state[0].timestamp + 14400000).format("HH:MM:ss")} -
+                {moment(1666021680365.231 + 14400000).format("HH:MM:ss")}{" "}
+              </p>
+              <p>Total Trades For The Time Period: {state.length}</p>
+            </div>
+          ) : null}
+        </div>
+      </section>
+      <section className="chart">
         {state ? (
           <HighchartsReact
             highcharts={Highcharts}
             options={options}
+            constructorType={"stockChart"}
             width="100%"
           />
         ) : null}
-      </div>
+      </section>
     </div>
   )
 }
-
-export default App
