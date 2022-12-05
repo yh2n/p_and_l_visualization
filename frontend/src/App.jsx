@@ -4,6 +4,7 @@ import SelectButton from "./components/Select"
 import Charts from "./components/Charts"
 
 import "./App.css"
+import { useEffect } from "react"
 
 function App() {
   const [state, setState] = useState(() => {
@@ -38,12 +39,16 @@ function App() {
       })
   })
 
-  const [filterOption, setFilterOption] = useState(["", ""])
+  const [filterOption, setFilterOption] = useState([])
 
   const handleFilterSelection = (e) => {
     let option = e.target.value.split(",")
     setFilterOption(option)
   }
+
+  useEffect(() => {
+    setFilterOption(["BTC/USDT", "symbol"])
+  }, [])
 
   return (
     <div className="App">
@@ -57,7 +62,7 @@ function App() {
         ) : null}
       </div>
       <section className="chart">
-        <Charts state={state} filterOption={filterOption} />
+        {state ? <Charts state={state} filterOption={filterOption} /> : null}
       </section>
     </div>
   )
