@@ -12,18 +12,3 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     </ChakraProvider>
   </React.StrictMode>
 )
-
-// for (let el of trades) {
-//   if (
-//     // negative fees = "cash back"
-//     (el.fees < 0 && el.side === "SELL") ||
-//     // fees deducted from the sales total
-//     (el.fees > 0 && el.side === "SELL")
-//   ) {
-//     el["total"] =
-//       el.fill_price * el.fill_quantity * ((100 - el.fees) / 100)
-//   } else {
-//     el["total"] =
-//       el.fill_price * el.fill_quantity * ((100 + el.fees) / 100)
-//   }
-// }
