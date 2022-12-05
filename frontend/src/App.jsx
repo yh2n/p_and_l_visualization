@@ -1,5 +1,4 @@
 function App() {
-  // lazy initialization
   const [state, setState] = useState(() => {
     fetch("http://localhost:8000/api", {
       method: "GET",
@@ -15,8 +14,18 @@ function App() {
           fill.timestamp = fill.timestamp / 1000 - 14400000
         }
         for (let el of trades) {
-          el["total"] =
-            el.fill_price * el.fill_quantity * ((100 + el.fees) / 100)
+          if (
+            // negative fees = "cash back"
+            (el.fees < 0 && el.side === "SELL") ||
+            // fees deducted from the sales total
+            (el.fees > 0 && el.side === "SELL")
+          ) {
+            el["total"] =
+              el.fill_price * el.fill_quantity * ((100 - el.fees) / 100)
+          } else {
+            el["total"] =
+              el.fill_price * el.fill_quantity * ((100 + el.fees) / 100)
+          }
         }
         setState(trades)
         console.table(trades[trades.length - 1])
