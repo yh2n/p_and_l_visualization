@@ -3,24 +3,19 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
   min-height: 100vh;
-}
-
-header {
-  margin-bottom: 100px;
-}
-
-.number_of_trades {
-  margin-bottom: 100px;
-}
-.chart {
-  /* border: solid; */
-  width: 100%;
-  height: 700px;
-  margin-bottom: 200px;
+  background-color: #020e13;
+  color: white;
 }
 
 .filter {
-  margin-bottom: 70px;
+  margin-bottom: 100px;
+}
+
+.chart {
+  border-top: 0.5px solid rgb(180, 180, 180);
+  width: 100%;
+  height: 700px;
+  margin-bottom: 100px;
 }
