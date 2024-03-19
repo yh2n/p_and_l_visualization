@@ -6,7 +6,10 @@ const Charts = (props) => {
   if (props.state) {
     options = {
       title: {
-        text: `${props.filterOption[1]}: ${props.filterOption[0]}`,
+        text: `${
+          props.filterOption[1].slice(0, 1).toUpperCase() +
+          props.filterOption[1].slice(1)
+        }: ${props.filterOption[0]}`,
         style: { color: "white" },
       },
       series: [
@@ -90,7 +93,7 @@ const Charts = (props) => {
   }
 
   return (
-    <div className="chart">
+    <div className="charts">
       <HighchartsReact
         highcharts={Highcharts}
         options={options}

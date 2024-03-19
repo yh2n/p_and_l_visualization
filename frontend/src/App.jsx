@@ -1,24 +1,21 @@
-import { useState } from "react"
-import Header from "./components/Header"
+import { useState, useEffect } from "react"
+import Header from "./components/header/Header"
 import SelectButton from "./components/Select"
 import Charts from "./components/Charts"
+import moment from "moment"
 
 import "./App.css"
-import { useEffect } from "react"
 
 function App() {
   const [state, setState] = useState(() => {
-    fetch("http://localhost:8000/api", {
-      method: "GET",
-      headers: { "content-type": "application/json" },
-    })
+    fetch("http://localhost:8000/api")
       .then((res) => {
         const parsedRes = res.json()
         return parsedRes
       })
       .then((trades) => {
         for (let fill of trades) {
-          // 14,400,000 substracted to make up for 4-hour discrepancy with HighCharts
+          // 14,400,000 substracted to make up for  HighCharts 4-hour discrepancy
           fill.timestamp = fill.timestamp / 1000 - 14400000
         }
         for (let el of trades) {
@@ -35,20 +32,22 @@ function App() {
               el.fill_price * el.fill_quantity * ((100 + el.fees) / 100)
           }
         }
+        console.table(trades)
         setState(trades)
       })
+      .catch((error) => console.log(error))
   })
 
   const [filterOption, setFilterOption] = useState([])
+
+  useEffect(() => {
+    setFilterOption(["BTC/USDT", "symbol"])
+  }, [])
 
   const handleFilterSelection = (e) => {
     let option = e.target.value.split(",")
     setFilterOption(option)
   }
-
-  useEffect(() => {
-    setFilterOption(["BTC/USDT", "symbol"])
-  }, [])
 
   return (
     <div className="App">
@@ -61,7 +60,7 @@ function App() {
           />
         ) : null}
       </div>
-      <section className="chart">
+      <section className="charts">
         {state ? <Charts state={state} filterOption={filterOption} /> : null}
       </section>
     </div>

@@ -8,6 +8,7 @@ const SelectButton = (props) => {
       result[props.state[i].exchange] = "exchange"
       result[props.state[i].symbol] = "symbol"
     }
+    // console.log(result)
     selectOptions = Array.from(Object.entries(result))
   }
   return (
@@ -17,6 +18,7 @@ const SelectButton = (props) => {
       borderColor="#17285e"
       focusBorderColor=" #17285e"
       color="white"
+      _hover={{ cursor: "pointer" }}
     >
       {/* "selected disabled" necessary to prevent placeholder from being selectable*/}
       <option selected disabled value="">
