@@ -1,3 +1,5 @@
+Simple trade PNL application created using React, [Highcharts](https://www.highcharts.com/), Python, and Django.
+
 ### Backend
 
 - cd into the `api` folder
