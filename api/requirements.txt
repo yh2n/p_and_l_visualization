@@ -1,6 +1,6 @@
 alabaster
 anaconda-client
-anaconda-navigator
+# anaconda-navigator
 anaconda-project
 anyio
 appdirs==1.4.4
