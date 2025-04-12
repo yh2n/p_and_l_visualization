@@ -4,20 +4,12 @@ djangorestframework==3.14.0
 docopt==0.6.2
 gevent
 glob2
-gmpy2==2.0.8
 greenlet
 gunicorn==23.0.0
 ipykernel
 ipython==8.12.3
 ipython-genutils
 ipywidgets
-isort
-itsdangerous
-jdcal
-jedi
-Jinja2==3.1.6
-jinja2-time
-joblib
 json5
 jsonschema
 jupyter
@@ -59,7 +51,6 @@ parso
 partd
 path
 pathlib2
-
 pexpect
 pickleshare
 poyo
@@ -71,7 +62,5 @@ py
 yapf
 yarg==0.1.9
 yfinance==0.2.43
-zict==2.0.0
 zipp
-zope.event==4.5.0
 zope.interface
