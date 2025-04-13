@@ -2,13 +2,14 @@ import { useState, useEffect } from "react"
 import Header from "./components/header/Header"
 import SelectButton from "./components/Select"
 import Charts from "./components/Charts"
-import moment from "moment"
 
 import "./App.css"
 
+const apiUrl = import.meta.env.VITE_API_URL
+
 function App() {
   const [state, setState] = useState(() => {
-    fetch("http://localhost:8000/api")
+    fetch(`${apiUrl}/api`)
       .then((res) => {
         const parsedRes = res.json()
         return parsedRes
@@ -32,7 +33,7 @@ function App() {
               el.fill_price * el.fill_quantity * ((100 + el.fees) / 100)
           }
         }
-        console.table(trades)
+        // console.table(trades)
         setState(trades)
       })
       .catch((error) => console.log(error))
