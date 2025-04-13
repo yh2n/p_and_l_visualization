@@ -59,8 +59,11 @@ psutil
 ptyprocess
 pure_eval==0.2.3
 py
+whitenoise==6.9.0
 yapf
 yarg==0.1.9
 yfinance==0.2.43
 zipp
 zope.interface
+
+
