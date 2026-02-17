@@ -1,4 +1,8 @@
-Simple trade PNL application created using React, [Highcharts](https://www.highcharts.com/), Python, Django, and [SQLite](https://sqlite.org/).
+Simple trade PNL visualization application created using:
+- React 
+- [Highcharts](https://www.highcharts.com/)
+- Django
+- [SQLite](https://sqlite.org/).
 
 ### Backend
 
